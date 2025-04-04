@@ -1,0 +1,123 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern sans-serif */
+    background-color: #121212; /* Darker background */
+    color: #eee;
+    margin: 0;
+    overflow: hidden; /* Prevent scrollbars on the body */
+}
+
+#app {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+#sidebar {
+    width: 200px;
+    background-color: #181818;
+    border-right: 1px solid #282828;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#logo {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    color: #e4b92e; /* Rockstar's gold/yellow */
+}
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+#sidebar li {
+    padding: 15px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-align: left; /* Align text to the left */
+}
+
+#sidebar li:hover {
+    background-color: #282828;
+}
+
+#sidebar li.active {
+    background-color: #333;
+    color: #e4b92e; /* Highlight active section */
+}
+
+/* Main Content Area */
+#content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+/* Game List */
+#game-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Larger tiles */
+    gap: 20px;
+}
+
+.game-entry {
+    position: relative; /* For positioning the play button */
+    background-color: #222;
+    border: 1px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.1s; /* Smooth scaling */
+}
+
+.game-entry:hover {
+    transform: scale(1.05); /* Slightly enlarge on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.game-entry img {
+    width: 100%;
+    height: 150px; /* Fixed height for consistent look */
+    object-fit: cover; /* Ensure image covers the space */
+    display: block; /* Remove extra space below image */
+}
+
+.game-info {
+    padding: 10px;
+}
+
+.game-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+}
+.launch-btn {
+  background-color: #e4b92e;
+    color: black;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+    width: 100%; /* Make button fill the container */
+    display: block; /* Make the button a block element */
+    margin-top: auto; /* Push the button to the bottom */
+}
+
+.launch-btn:hover {
+    background-color: #d6a81c; /* Slightly darker on hover */
+}
+
+/* Hidden Sections */
+#news-section, #settings-section {
+    display: none; /* Hidden by default */
+}
+
+#settings-section, #news-section{
+    padding-left: 1rem;
+}
