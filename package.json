@@ -1,25 +1,21 @@
 {
-  "name": "awg-launcher",
-  "version": "1.0.0",
-  "description": "An amazing game launcher.",
-  "main": "src/main/main.js",
+  "name": "abbrev",
+  "version": "1.1.1",
+  "description": "Like ruby's abbrev module, but in js",
+  "author": "Isaac Z. Schlueter <i@izs.me>",
+  "main": "abbrev.js",
   "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make"
+    "test": "tap test.js --100",
+    "preversion": "npm test",
+    "postversion": "npm publish",
+    "postpublish": "git push origin --all; git push origin --tags"
   },
-  "keywords": [],
-  "author": "Aarohan Poudel",
+  "repository": "http://github.com/isaacs/abbrev-js",
   "license": "ISC",
   "devDependencies": {
-    "@electron-forge/cli": "^7.2.0",
-    "@electron-forge/maker-deb": "^7.2.0",
-    "@electron-forge/maker-rpm": "^7.2.0",
-    "@electron-forge/maker-squirrel": "^7.2.0",
-    "@electron-forge/maker-zip": "^7.2.0",
-    "electron": "^31.2.1"
+    "tap": "^10.1"
   },
-  "dependencies": {
-    "fs-extra": "^11.2.0"
-  }
+  "files": [
+    "abbrev.js"
+  ]
 }
