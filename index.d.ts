@@ -1,69 +1,51 @@
-import * as http from 'http';
-import * as https from 'https';
-import * as net from 'net';
-
-interface PlainObject {
-  [key: string]: any;
-}
-
-declare class _HttpAgent extends http.Agent {
-  constructor(opts?: AgentKeepAlive.HttpOptions);
-  readonly statusChanged: boolean;
-  createConnection(options: net.NetConnectOpts, cb?: Function): net.Socket;
-  createSocket(req: http.IncomingMessage, options: http.RequestOptions, cb: Function): void;
-  getCurrentStatus(): AgentKeepAlive.AgentStatus;
-}
-
-interface Constants {
-  CURRENT_ID: Symbol;
-  CREATE_ID: Symbol;
-  INIT_SOCKET: Symbol;
-  CREATE_HTTPS_CONNECTION: Symbol;
-  SOCKET_CREATED_TIME: Symbol;
-  SOCKET_NAME: Symbol;
-  SOCKET_REQUEST_COUNT: Symbol;
-  SOCKET_REQUEST_FINISHED_COUNT: Symbol;
-}
-
 /**
- * @deprecated instead use `import { HttpAgent } from 'agentkeepalive'; or `const HttpAgent = require('agentkeepalive').HttpAgent;`
- */
-declare class AgentKeepAlive extends _HttpAgent {}
+Create an error from multiple errors.
+*/
+declare class AggregateError<T extends Error = Error> extends Error implements Iterable<T> {
+	readonly name: 'AggregateError';
 
-declare namespace AgentKeepAlive {
-  export interface AgentStatus {
-    createSocketCount: number;
-    createSocketErrorCount: number;
-    closeSocketCount: number;
-    errorSocketCount: number;
-    timeoutSocketCount: number;
-    requestCount: number;
-    freeSockets: PlainObject;
-    sockets: PlainObject;
-    requests: PlainObject;
-  }
+	/**
+	@param errors - If a string, a new `Error` is created with the string as the error message. If a non-Error object, a new `Error` is created with all properties from the object copied over.
+	@returns An Error that is also an [`Iterable`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#Iterables) for the individual errors.
 
-  interface CommonHttpOption {
-    keepAlive?: boolean | undefined;
-    freeSocketTimeout?: number | undefined;
-    freeSocketKeepAliveTimeout?: number | undefined;
-    timeout?: number | undefined;
-    socketActiveTTL?: number | undefined;
-  }
+	@example
+	```
+	import AggregateError = require('aggregate-error');
 
-  export interface HttpOptions extends http.AgentOptions, CommonHttpOption { }
-  export interface HttpsOptions extends https.AgentOptions, CommonHttpOption { }
+	const error = new AggregateError([new Error('foo'), 'bar', {message: 'baz'}]);
 
-  export class HttpAgent extends _HttpAgent {}
-  export class HttpsAgent extends https.Agent {
-    constructor(opts?: HttpsOptions);
-    readonly statusChanged: boolean;
-    createConnection(options: net.NetConnectOpts, cb?: Function): net.Socket;
-    createSocket(req: http.IncomingMessage, options: http.RequestOptions, cb: Function): void;
-    getCurrentStatus(): AgentStatus;
-  }
+	throw error;
 
-  export const constants: Constants;
+	// AggregateError:
+	//	Error: foo
+	//		at Object.<anonymous> (/Users/sindresorhus/dev/aggregate-error/example.js:3:33)
+	//	Error: bar
+	//		at Object.<anonymous> (/Users/sindresorhus/dev/aggregate-error/example.js:3:13)
+	//	Error: baz
+	//		at Object.<anonymous> (/Users/sindresorhus/dev/aggregate-error/example.js:3:13)
+	//	at AggregateError (/Users/sindresorhus/dev/aggregate-error/index.js:19:3)
+	//	at Object.<anonymous> (/Users/sindresorhus/dev/aggregate-error/example.js:3:13)
+	//	at Module._compile (module.js:556:32)
+	//	at Object.Module._extensions..js (module.js:565:10)
+	//	at Module.load (module.js:473:32)
+	//	at tryModuleLoad (module.js:432:12)
+	//	at Function.Module._load (module.js:424:3)
+	//	at Module.runMain (module.js:590:10)
+	//	at run (bootstrap_node.js:394:7)
+	//	at startup (bootstrap_node.js:149:9)
+
+
+	for (const individualError of error) {
+		console.log(individualError);
+	}
+	//=> [Error: foo]
+	//=> [Error: bar]
+	//=> [Error: baz]
+	```
+	*/
+	constructor(errors: ReadonlyArray<T | {[key: string]: any} | string>);
+
+	[Symbol.iterator](): IterableIterator<T>;
 }
 
-export = AgentKeepAlive;
+export = AggregateError;
