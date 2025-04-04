@@ -1,61 +1,59 @@
-# aggregate-error [![Build Status](https://travis-ci.org/sindresorhus/aggregate-error.svg?branch=master)](https://travis-ci.org/sindresorhus/aggregate-error)
+# ms
 
-> Create an error from multiple errors
+![CI](https://github.com/vercel/ms/workflows/CI/badge.svg)
 
+Use this package to easily convert various time formats to milliseconds.
 
-## Install
-
-```
-$ npm install aggregate-error
-```
-
-
-## Usage
+## Examples
 
 ```js
-const AggregateError = require('aggregate-error');
-
-const error = new AggregateError([new Error('foo'), 'bar', {message: 'baz'}]);
-
-throw error;
-/*
-AggregateError:
-    Error: foo
-        at Object.<anonymous> (/Users/sindresorhus/dev/aggregate-error/example.js:3:33)
-    Error: bar
-        at Object.<anonymous> (/Users/sindresorhus/dev/aggregate-error/example.js:3:13)
-    Error: baz
-        at Object.<anonymous> (/Users/sindresorhus/dev/aggregate-error/example.js:3:13)
-    at AggregateError (/Users/sindresorhus/dev/aggregate-error/index.js:19:3)
-    at Object.<anonymous> (/Users/sindresorhus/dev/aggregate-error/example.js:3:13)
-    at Module._compile (module.js:556:32)
-    at Object.Module._extensions..js (module.js:565:10)
-    at Module.load (module.js:473:32)
-    at tryModuleLoad (module.js:432:12)
-    at Function.Module._load (module.js:424:3)
-    at Module.runMain (module.js:590:10)
-    at run (bootstrap_node.js:394:7)
-    at startup (bootstrap_node.js:149:9)
-*/
-
-for (const individualError of error) {
-	console.log(individualError);
-}
-//=> [Error: foo]
-//=> [Error: bar]
-//=> [Error: baz]
+ms('2 days')  // 172800000
+ms('1d')      // 86400000
+ms('10h')     // 36000000
+ms('2.5 hrs') // 9000000
+ms('2h')      // 7200000
+ms('1m')      // 60000
+ms('5s')      // 5000
+ms('1y')      // 31557600000
+ms('100')     // 100
+ms('-3 days') // -259200000
+ms('-1h')     // -3600000
+ms('-200')    // -200
 ```
 
+### Convert from Milliseconds
 
-## API
+```js
+ms(60000)             // "1m"
+ms(2 * 60000)         // "2m"
+ms(-3 * 60000)        // "-3m"
+ms(ms('10 hours'))    // "10h"
+```
 
-### AggregateError(errors)
+### Time Format Written-Out
 
-Returns an `Error` that is also an [`Iterable`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Iterators_and_Generators#Iterables) for the individual errors.
+```js
+ms(60000, { long: true })             // "1 minute"
+ms(2 * 60000, { long: true })         // "2 minutes"
+ms(-3 * 60000, { long: true })        // "-3 minutes"
+ms(ms('10 hours'), { long: true })    // "10 hours"
+```
 
-#### errors
+## Features
 
-Type: `Array<Error|Object|string>`
+- Works both in [Node.js](https://nodejs.org) and in the browser
+- If a number is supplied to `ms`, a string with a unit is returned
+- If a string that contains the number is supplied, it returns it as a number (e.g.: it returns `100` for `'100'`)
+- If you pass a string with a number and a valid unit, the number of equivalent milliseconds is returned
 
-If a string, a new `Error` is created with the string as the error message.<br>
-If a non-Error object, a new `Error` is created with all properties from the object copied over.
+## Related Packages
+
+- [ms.macro](https://github.com/knpwrs/ms.macro) - Run `ms` as a macro at build-time.
+
+## Caught a Bug?
+
+1. [Fork](https://help.github.com/articles/fork-a-repo/) this repository to your own GitHub account and then [clone](https://help.github.com/articles/cloning-a-repository/) it to your local device
+2. Link the package to the global module directory: `npm link`
+3. Within the module you want to test your local development instance of ms, just link it to the dependencies: `npm link ms`. Instead of the default one from npm, Node.js will now use your clone of ms!
+
+As always, you can run the tests using: `npm test`
