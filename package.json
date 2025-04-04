@@ -1,0 +1,25 @@
+{
+  "name": "awg-launcher",
+  "version": "1.0.0",
+  "description": "An amazing game launcher.",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "keywords": [],
+  "author": "Aarohan Poudel",
+  "license": "ISC",
+  "devDependencies": {
+    "@electron-forge/cli": "^7.2.0",
+    "@electron-forge/maker-deb": "^7.2.0",
+    "@electron-forge/maker-rpm": "^7.2.0",
+    "@electron-forge/maker-squirrel": "^7.2.0",
+    "@electron-forge/maker-zip": "^7.2.0",
+    "electron": "^31.2.1"
+  },
+  "dependencies": {
+    "fs-extra": "^11.2.0"
+  }
+}
